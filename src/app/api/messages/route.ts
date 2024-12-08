@@ -1,3 +1,5 @@
+'use server'
+
 import supabase from "@/lib/supabase";
 import { NextResponse } from "next/server";
 
@@ -5,14 +7,8 @@ import type { Database } from "@/types/database.types";
 
 export async function GET() {
   const { data, error } = await supabase
-    .from("message")
-    .select(`
-     *,
-     MessageContent (
-       content,
-       created_at
-     )
-   `)
+    .from("message_with_content")
+    .select("*")
     .eq("status", "ACTIVE")
     .order("created_at", { ascending: false });
 
@@ -21,7 +17,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  type MessageContent = Database["public"]["Tables"]["messagecontent"]["Insert"];
+  type MessageContent = Database["public"]["Tables"]["message_contents"]["Insert"];
 
   const { content } = await request.json() as MessageContent;
 
@@ -29,7 +25,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Content is required" }, { status: 400 });
 
   const { data: message, error } = await supabase
-    .from("message")
+    .from("messages")
     .insert([{ status: "ACTIVE" }])
     .select()
     .single();
@@ -37,7 +33,7 @@ export async function POST(request: Request) {
   if (error) return NextResponse.json({ error }, { status: 500 });
 
   const { error: contentError } = await supabase
-    .from("messagecontent")
+    .from("message_contents")
     .insert([{
         message_id: message.id,
         content,

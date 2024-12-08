@@ -9,60 +9,43 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      message: {
-        Row: {
-          created_at: string | null
-          id: string
-          last_viewed_at: string | null
-          status: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          last_viewed_at?: string | null
-          status: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          last_viewed_at?: string | null
-          status?: string
-        }
-        Relationships: []
-      }
-      messagecontent: {
+      message_contents: {
         Row: {
           content: string
-          created_at: string | null
           id: string
           is_encrypted: boolean | null
           message_id: string | null
         }
         Insert: {
           content: string
-          created_at?: string | null
           id?: string
           is_encrypted?: boolean | null
           message_id?: string | null
         }
         Update: {
           content?: string
-          created_at?: string | null
           id?: string
           is_encrypted?: boolean | null
           message_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "messagecontent_message_id_fkey"
+            foreignKeyName: "message_contents_message_id_fkey"
             columns: ["message_id"]
             isOneToOne: false
-            referencedRelation: "message"
+            referencedRelation: "message_with_content"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_contents_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
             referencedColumns: ["id"]
           },
         ]
       }
-      messageview: {
+      message_views: {
         Row: {
           id: string
           message_id: string | null
@@ -83,17 +66,54 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "messageview_message_id_fkey"
+            foreignKeyName: "message_views_message_id_fkey"
             columns: ["message_id"]
             isOneToOne: false
-            referencedRelation: "message"
+            referencedRelation: "message_with_content"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_views_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
             referencedColumns: ["id"]
           },
         ]
       }
+      messages: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_viewed_at: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_viewed_at?: string | null
+          status: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_viewed_at?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      message_with_content: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          id: string | null
+          last_viewed_at: string | null
+          status: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never

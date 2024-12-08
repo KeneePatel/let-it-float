@@ -8,6 +8,5 @@ export const spaceGrotesk = Space_Grotesk({
 });
 
 export const playwriteFRModerne = Playwrite_FR_Moderne({
-  weight: ["100", "200", "300", "400"],
   variable: "--font-playwrite-fr-moderne",
 });
