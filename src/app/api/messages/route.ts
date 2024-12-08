@@ -3,8 +3,6 @@ import { NextResponse } from "next/server";
 
 import type { Database } from "@/types/database.types";
 
-type MessageContent = Database["public"]["Tables"]["messagecontent"]["Insert"];
-
 export async function GET() {
   const { data, error } = await supabase
     .from("message")
@@ -23,6 +21,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  type MessageContent = Database["public"]["Tables"]["messagecontent"]["Insert"];
+
   const { content } = await request.json() as MessageContent;
 
   if (!content)
