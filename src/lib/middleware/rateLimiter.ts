@@ -33,8 +33,6 @@ export default function rateLimitMiddleware(handler: (req: NextRequest) => Promi
       lastReset: Date.now()
     });
 
-    console.log(`${ip} has ${count} requests`);
-
     return handler(req);
   }
 }

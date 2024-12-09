@@ -36,7 +36,6 @@ export default function WritePage() {
       return
     }
     const data = await res.json()
-    console.log('Ship launched', data)
 
     toast({
       title: 'Ship launched',
