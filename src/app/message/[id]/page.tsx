@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from 'lucide-react'
-import { use, useEffect, useState } from 'react'
+import { use, useCallback, useEffect, useState } from 'react'
 
 import type { Database } from '@/types/database.types'
 
@@ -14,7 +14,7 @@ export default function MessagePage({ params }: { params: Promise<{ id: string }
   const id = use(params).id;
   const [ship, setShip] = useState<MessageWithContent | null>(null)
 
-  async function fetchMessage() {
+  const fetchMessage = useCallback(async () => {
     const res = await fetch(`/api/messages/${id}`);
     if (!res.ok) {
       console.error(`Error fetching message with id ${id}: ${res.statusText}`);
@@ -23,11 +23,11 @@ export default function MessagePage({ params }: { params: Promise<{ id: string }
 
     const message: MessageWithContent = await res.json();
     setShip(message)
-  }
+  }, [id])
 
   useEffect(() => {
     fetchMessage()
-  }, [])
+  }, [fetchMessage])
 
   if (!ship) {
     return <div>Ship not found</div>
