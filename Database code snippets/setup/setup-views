@@ -1,0 +1,9 @@
+CREATE VIEW message_with_content AS
+SELECT 
+    m.id,
+    m.status,
+    m.created_at,
+    m.last_viewed_at,
+    mc.content
+FROM messages m
+INNER JOIN message_contents mc ON m.id = mc.message_id;

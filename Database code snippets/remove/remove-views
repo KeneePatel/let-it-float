@@ -1,0 +1,1 @@
+DROP VIEW IF EXISTS message_with_content;

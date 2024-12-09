@@ -26,7 +26,7 @@ cd let-it-float
 
 2. Make a new supabase project and get the anon key and url
 
-3. Run the database setup postgres commands
+3. Run the database setup commands
 
 4. Install dependencies
 ```bash
